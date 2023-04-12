@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # my-plan
 
 > A Vue.js project
@@ -28,3 +29,7 @@ npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+=======
+# clouddisk-front
+毕设前端
+>>>>>>> 840950cf817af3e762337c1e64dc837946b80cf1
