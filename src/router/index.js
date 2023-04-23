@@ -16,6 +16,7 @@ import First from '@/components/views/user/first'
 import Message from '@/components/views/user/message'
 import Usercenter from '@/components/views/user/usercenter'
 import Work from '@/components/views/user/work'
+import Forget from '@/components/forget'
 
 import {
   name
@@ -34,6 +35,11 @@ export default new Router({
       path: '/register',
       name: 'register',
       component: Register,
+    },
+    {
+      path: '/forget',
+      name: 'forget',
+      component: Forget
     },
 
 

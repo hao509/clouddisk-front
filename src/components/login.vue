@@ -23,6 +23,7 @@
         <el-form-item >
           <el-button style="margin-left:100px;margin-top: 50px;" class="btn-all" size="medium" type="primary" @click="accountLogin">登录</el-button>
           <el-button class="btn-all" size="medium" type="primary" @click="toaccountregister">注册</el-button>
+          <router-link to="forget" :underline="false">忘记密码</router-link>
         </el-form-item>
       </el-form>
       </div>
@@ -156,5 +157,12 @@ h3{
   padding-bottom: 10px;
   margin-top:30px ;
 }
+a{
+  text-decoration: none;
+}
+.router-link-active {
+  text-decoration: none;
+}
+
 
 </style>

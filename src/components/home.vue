@@ -5,7 +5,7 @@
       <el-row style="margin: 0 10px;">
         <el-col :span="20" class="logo-container">
           <div class="logo grid-content bg-purple">
-            <img src="../assets/logo.png" alt="">
+            <img src="../assets/2.png" alt="">
             <p class="title" style="padding-top: 20px; padding-bottom: 10px;color: black;">你的网盘</p>
           </div>
         </el-col>
