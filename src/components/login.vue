@@ -105,7 +105,7 @@ export default {
                     this.$router.push('/home');
                 }
                 else {
-                    this.msg("error", data.msg);
+                    this.msg("error", data.message);
                 }
             }, (error) => {
                 this.msg("error", "系统异常，请联系管理员");

@@ -23,6 +23,7 @@ export const apiService = {
       }
     })
   },
+
   getSharePage(params) {
     return axios.get("/api/updata/sharelist", {
       params: {
@@ -68,6 +69,11 @@ export const apiService = {
   forgetpassword(params){
     return axios.post("/api/user/forgetpassword", params)
 
+  },
+  getwater(token){
+    return axios.post("/api/view/water",{
+      token: token
+    })
   },
 
 

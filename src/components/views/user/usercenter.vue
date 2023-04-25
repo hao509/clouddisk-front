@@ -1,97 +1,169 @@
 <template>
-    <div>
-      <el-row>
-        <el-col :span="12">
-          <div id="main" style="height:500px;padding:5px"></div>
-        </el-col>
-        <el-col :span="12">
-          <div id="mainTow" style="height:500px;padding:5px"></div>
-        </el-col>
-      </el-row> 
+  <div class='wrapper'>
+    <div class="inner">
+      <div class='chart' id='chart'></div>
+      <div class="btm"></div>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    name: '',
-    data() { 
-      return {
-  
-      }
+  </div>
+</template>
+
+
+<script>
+import WaterBallChart from '@/components/common/WaterBallChart.vue';
+import axios from 'axios';
+import { apiService } from '../../../../util/api'
+
+export default {
+   data () {
+    return {}
+  },
+  mounted () {
+   // this.drawChart()
+    this.fetchWaterBallData()
+  },
+
+  methods: {
+    async fetchWaterBallData() {
+      var token = localStorage.getItem("logintoken");
+      console.log(token);
+      var userObj = JSON.parse(token);
+      token = userObj.data.id
+      // 使用 axios 或其他库从后端获取数据
+      //const response = await axios.get('/api/view/water', token);
+      apiService.getwater(token).then((res) => {
+        console.log(res.data);
+        let data = res.data;
+        if(data.code == '200') {
+           this.data1 = []
+          this.data1[0] = data.data
+          console.log(this.data1[0]);
+
+          setTimeout(() => {
+             this.drawChart(this.data1[0])
+            
+          }, 500);
+         
+          
+        }
+
+      })
+
+
+
+
+     // this.waterBallData = response.data;
     },
-    mounted() {
-      console.log('1')
-      this.main()
-      this.main2()
-    },
-    methods:{
-      //锟斤拷一锟斤拷图锟斤拷
-      main(){
-        //锟斤拷始锟斤拷echarts锟斤拷实锟斤拷
-        var main = this.$echarts.init(document.getElementById("main"));
-        //锟斤拷锟斤拷图锟斤拷
-        main.setOption({
-          xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+     drawChart (data2) {
+      // 基于准备好的dom，初始化echarts实例
+      let chart = this.$echarts.init(document.getElementById('chart'))
+      // 监听屏幕变化自动缩放图表
+      window.addEventListener('resize', function () {
+        chart.resize()
+      })
+      // 绘制图表
+      chart.setOption({
+        // 图表主标题
+        title: {
+          text: '使用情况', // 主标题文本，支持使用 \n 换行
+          top: 20, // 定位 值: 'top', 'middle', 'bottom' 也可以是具体的值或者百分比
+          left: 'center', // 值: 'left', 'center', 'right' 同上
+          textStyle: { // 文本样式
+            fontSize: 30,
+            fontWeight: 600,
+            color: '#fff'
+          }
+        },
+        // 提示框组件
+        tooltip: {
+          trigger: 'item', // 触发类型, 数据项图形触发，主要在散点图，饼图等无类目轴的图表中使用。
+          textStyle: {
+            color: '#fff' // 文字颜色
           },
-          yAxis: {
-            type: 'value'
-          },
-          series: [
-            {
-              data: [150, 230, 224, 218, 135, 147, 260],
-              type: 'line'
+          // 提示框浮层内容格式器，支持字符串模板和回调函数两种形式
+          // 水球图: {a}（系列名称），{b}（无），{c}（数值）
+          // 使用函数模板   传入的数据值 -> value: number|Array,
+          formatter: function (value) {
+            return value.seriesName + ': ' + value.data * 100 + '%'
+          }
+        },
+        series: [{
+          type: 'liquidFill',
+          name: '使用情况', // 系列名称，用于tooltip的显示，legend 的图例筛选
+          radius: '62%', // 水球图的半径
+          center: ['50%', '60%'], // 水球图的中心（圆心）坐标，数组的第一项是横坐标，第二项是纵坐标
+          // 水填充图的形状 circle 默认圆形  rect 圆角矩形  triangle 三角形  
+          // diamond 菱形  pin 水滴状 arrow 箭头状  还可以是svg的path
+          shape: 'circle',
+          phase: 0, // 波的相位弧度 不设置  默认自动
+          direction: 'right', // 波浪移动的速度  两个参数  left 从右往左 right 从左往右
+          outline: {
+            show: true,
+            borderDistance: 0, // 边框线与图表的距离 数字
+            itemStyle: {
+              opacity: 1, // 边框的透明度   默认为 1
+              borderWidth: 1, // 边框的宽度
+              shadowBlur: 1, // 边框的阴影范围 一旦设置了内外都有阴影
+              shadowColor: '#fff', // 边框的阴影颜色,
+              borderColor: '#41dcd8' // 边框颜色
             }
-          ]
-        })
-      },
-      //锟节讹拷锟斤拷图锟斤拷
-      main2(){
-        //锟斤拷始锟斤拷echarts锟斤拷实锟斤拷
-        var main = this.$echarts.init(document.getElementById("mainTow"));
-        //锟斤拷锟斤拷图锟斤拷
-        main.setOption({
-            legend: {
-              top: 'bottom'
-            },
-            toolbox: {
-              show: true,
-              feature: {
-                mark: { show: true },
-                dataView: { show: true, readOnly: false },
-                restore: { show: true },
-                saveAsImage: { show: true }
-              }
-            },
-            series: [
-              {
-                name: 'Nightingale Chart',
-                type: 'pie',
-                radius: [50, 250],
-                center: ['50%', '50%'],
-                roseType: 'area',
-                itemStyle: {
-                  borderRadius: 8
-                },
-                data: [
-                  { value: 42, name: '锟斤拷锟斤拷' },
-                  { value: 38, name: 'rose 2' },
-                  { value: 32, name: 'rose 3' },
-                  { value: 30, name: 'rose 4' },
-                  { value: 28, name: 'rose 5' },
-                  { value: 26, name: 'rose 6' },
-                  { value: 22, name: 'rose 7' },
-                  { value: 18, name: 'rose 8' }
-                ]
-              }
-            ]
-        })
-      }
-    },
-   }
-  </script>
+          },
+          // 图形样式
+          itemStyle: {
+            color: '#4077eb', // 水球显示的背景颜色
+            opacity: 0.5, // 波浪的透明度
+            shadowBlur: 10 // 波浪的阴影范围
+          },
+          backgroundStyle: {
+            color: '#407bf3', // 水球未到的背景颜色
+            opacity: 0.5
+          },
+          // 图形的高亮样式
+          emphasis: {
+            itemStyle: {
+              opacity: 0.8 // 鼠标经过波浪颜色的透明度
+            }
+          },
+          // 图形上的文本标签
+          label: {
+            fontSize: 55,
+            fontWeight: 400,
+            color: '#fff'
+          },
+          data: [data2] // 系列中的数据内容数组
+        }]
+      })
+    }
+  }
+}
+
   
-  <style scoped>
-  
-  </style>
+
+</script>
+<style scoped>
+  .wrapper {
+    width: 100%;
+  }
+  .wrapper .inner {
+    position: relative;
+    width: 50%;
+    height: 500px;
+    border: 1px solid #eeeeee;
+    margin: 100px 50px 0;
+    /* background: url(../../public/static/bg.png) no-repeat;
+    background-size: 100% 100%; */
+  }
+  .wrapper .inner .chart {
+    width: 400px;
+    height: 400px;
+    /* background: url(../../public/static/fill-border.gif) no-repeat center bottom;
+    background-size: 80% 80%; */
+    margin: 10px auto 0;
+  }
+  .wrapper .inner .btm {
+    width: 320px;
+    height: 25px;
+    /* background: url(../../public/static/icon-bot.png) no-repeat;
+    background-size: 100% 100%; */
+    margin: 0 auto;
+  }
+</style>
