@@ -75,6 +75,12 @@ export const apiService = {
       token: token
     })
   },
+  getbackup(){
+    return axios.get("/api/db/database-backup",
+    {
+      responseType: 'blob'
+    })
+  },
 
 
   //获取菜单
