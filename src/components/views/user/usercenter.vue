@@ -1,5 +1,5 @@
 <template>
-  <div class='wrapper'>
+  <div class='wrapper'>使用情况
     <div class="inner">
       <div class='chart' id='chart'></div>
       <div class="btm"></div>

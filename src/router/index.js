@@ -111,17 +111,7 @@ export default new Router({
             icon: "el-icon-success",
             role: ['admin']
           },
-          children: [{
-            path: 'test',
-            name: 'test',
-            menu: true,
-            component:Test,
-            meta:{
-              title: "test",
-              role:['admin']
-
-            }
-          }]
+       
         },
         {
           path: '/systemmanage',

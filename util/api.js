@@ -13,6 +13,9 @@ export const apiService = {
   register(params) {
     return axios.post("/api/user/register", params)
   },
+  register_admin(params) {
+    return axios.post("/api/admin/register", params)
+  },
   //获取文件列表
   getFilePage(params) {
     return axios.get("/api/updata/filelist", {
@@ -81,7 +84,33 @@ export const apiService = {
       responseType: 'blob'
     })
   },
+  getuserlist(){
+    return axios.get("/api/admin/userlist")
 
+  },
+  deleteuser(id){
+    return axios.post("/api/admin/deleteuser",{
+      id: id
+
+    })
+
+  },
+  statusHandle(id){
+    return axios.post("api/admin/status",{
+      id: id
+    })
+  },
+  getlog(){
+    return axios.get("/api/admin/log")
+  },
+getlogexcel() {
+  return axios.post("/api/admin/getlog",null, {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    responseType: 'blob'
+  });
+},
 
   //获取菜单
   getMenu(pid) {
